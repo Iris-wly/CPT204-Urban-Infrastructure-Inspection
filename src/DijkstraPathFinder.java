@@ -120,4 +120,55 @@ public class DijkstraPathFinder {
 
         return new PathResult(startId, endId, dist.get(endId), path);
     }
+
+    /**
+     * Finds the shortest route through a sequence of required nodes in order.
+     *
+     * nodeIds must contain at least two entries: [start, ..., end].
+     * Intermediate entries are required waypoints that the route must visit in order.
+     *
+     * The method runs findShortestPath on each consecutive pair of nodes,
+     * then stitches the segments together into one path.
+     *
+     * Stitching rule:
+     *   The last node of segment i equals the first node of segment i+1 (the waypoint).
+     *   To avoid duplicating the waypoint, the first node of each segment after the
+     *   first is skipped when building the combined path.
+     *
+     * If any segment has no path, the returned PathResult has totalDistance = -1.
+     *
+     * Examples:
+     *   findPathWithWaypoints(graph, {A1, A1})        -> Case 1 (trivial)
+     *   findPathWithWaypoints(graph, {A1, A10})       -> Case 2 (no waypoints)
+     *   findPathWithWaypoints(graph, {A1, B5, B1})    -> Case 3 (one waypoint B5)
+     *   findPathWithWaypoints(graph, {A1, B5, C5, C1})-> Case 4 (two waypoints B5, C5)
+     */
+    public static PathResult findPathWithWaypoints(Graph graph, String[] nodeIds) {
+        ArrayList<String> fullPath = new ArrayList<>();
+        int totalDistance = 0;
+
+        for (int i = 0; i < nodeIds.length - 1; i++) {
+            PathResult segment = findShortestPath(graph, nodeIds[i], nodeIds[i + 1]);
+
+            if (segment.getTotalDistance() < 0) {
+                return new PathResult(
+                        nodeIds[0], nodeIds[nodeIds.length - 1], -1, new ArrayList<>());
+            }
+
+            if (i == 0) {
+                fullPath.addAll(segment.getPath());
+            } else {
+                // The first node of this segment is already the last node of the
+                // previous segment (the waypoint). Skip it to avoid duplication.
+                ArrayList<String> segPath = segment.getPath();
+                for (int j = 1; j < segPath.size(); j++) {
+                    fullPath.add(segPath.get(j));
+                }
+            }
+
+            totalDistance += segment.getTotalDistance();
+        }
+
+        return new PathResult(nodeIds[0], nodeIds[nodeIds.length - 1], totalDistance, fullPath);
+    }
 }

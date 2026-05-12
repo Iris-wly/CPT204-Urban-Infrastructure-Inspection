@@ -4,6 +4,9 @@
 *.war
 *.ear
 
+# Compiled output directory
+out/
+
 # IDE files
 .vscode/
 .idea/
