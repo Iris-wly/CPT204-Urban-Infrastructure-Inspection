@@ -1,3 +1,12 @@
+/**
+ * Represents a candidate inspection location with a priority score.
+ *
+ * Each Location has a unique ID (e.g. "L0001") and a numeric priority score.
+ * The static {@link #compare(Location, Location)} method defines the canonical
+ * ranking rule used by all three sorting algorithms:
+ *   1. Higher priority score ranks first (descending order).
+ *   2. On a tie, the smaller location ID ranks first (ascending lexicographic order).
+ */
 public class Location {
 
     private String locationId;

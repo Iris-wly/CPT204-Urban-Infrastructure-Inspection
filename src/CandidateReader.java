@@ -3,25 +3,32 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CandidateCSVReader {
+/**
+ * Reads a candidate CSV file and constructs a list of {@link Location} objects.
+ *
+ * Expected format (header row is skipped):
+ * <pre>
+ *   location_id,priority_score
+ *   L0001,98.5
+ * </pre>
+ */
+public class CandidateReader {
 
     /**
-     * Reads a candidate CSV file and returns a list of Location objects.
-     * Expected CSV format:
-     *   location_id,priority_score
-     *   L0001,98.5
-     *   ...
+     * @param filePath path to the candidates CSV file
+     * @return list of {@link Location} objects in file order (unsorted)
+     * @throws IOException if the file cannot be read
      */
     public static ArrayList<Location> readCandidates(String filePath) throws IOException {
         ArrayList<Location> locations = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            br.readLine();
+            br.readLine(); // skip header
 
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                String id = parts[0].trim();
+                String id    = parts[0].trim();
                 double score = Double.parseDouble(parts[1].trim());
                 locations.add(new Location(id, score));
             }

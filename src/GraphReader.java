@@ -3,33 +3,34 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Reads a paths CSV file and builds a Graph.
+ * Reads a paths CSV file and builds a {@link Graph}.
  *
- * Expected CSV format:
+ * Expected format (header row is skipped):
+ * <pre>
  *   from_location,to_location,weight
  *   L0001,L0002,2
- *   ...
- *
+ * </pre>
  * Each row adds one undirected edge to the graph.
  */
-public class GraphCSVReader {
+public class GraphReader {
 
     /**
-     * Reads the CSV file at filePath and returns a fully constructed Graph.
-     * The header row is skipped.
+     * @param filePath path to the paths CSV file
+     * @return fully constructed Graph
+     * @throws IOException if the file cannot be read
      */
     public static Graph readGraph(String filePath) throws IOException {
         Graph graph = new Graph();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            br.readLine();
+            br.readLine(); // skip header
 
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                String from = parts[0].trim();
-                String to = parts[1].trim();
-                int weight = Integer.parseInt(parts[2].trim());
+                String from   = parts[0].trim();
+                String to     = parts[1].trim();
+                int    weight = Integer.parseInt(parts[2].trim());
                 graph.addEdge(from, to, weight);
             }
         }
