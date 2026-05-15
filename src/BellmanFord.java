@@ -13,10 +13,8 @@ import java.util.HashMap;
  */
 public class BellmanFord {
 
-    /**
-     * Returns the shortest path from startId to endId.
-     * Returns totalDistance = -1 if no path exists.
-     */
+    //Returns the shortest path from startId to endId.
+    //Returns totalDistance = -1 if no path exists.
     public static PathResult findShortestPath(Graph graph, String startId, String endId) {
         if (startId.equals(endId)) {
             ArrayList<String> path = new ArrayList<>();
@@ -71,10 +69,8 @@ public class BellmanFord {
         return new PathResult(startId, endId, dist.get(endId), path);
     }
 
-    /**
-     * Finds the shortest route visiting nodeIds[0..n-1] in order.
-     * Uses the same segment-stitching logic as {@link Dijkstra#findPathWithWaypoints}.
-     */
+    //Finds the shortest route visiting nodeIds[0..n-1] in order.
+    //Uses the same segment-stitching logic as Dijkstra#findPathWithWaypoints.
     public static PathResult findPathWithWaypoints(Graph graph, String[] nodeIds) {
         ArrayList<String> fullPath = new ArrayList<>();
         int totalDistance = 0;

@@ -24,14 +24,12 @@ public class BubbleSort implements Sorter {
     public void sort(ArrayList<Location> locations) {
         int n = locations.size();
 
-        // Outer loop: each pass i guarantees that the i largest elements
-        // are already in their final positions at the end of the list.
+        // Outer loop: each pass i guarantees that the i largest elements are already in their final positions at the end of the list.
         // So the unsorted region is locations[0 .. n-1-i].
         for (int i = 0; i < n - 1; i++) {
 
             // Inner loop: walk through every adjacent pair in the unsorted region.
-            // After this loop finishes, the largest element in [0..n-1-i]
-            // has moved to position n-1-i.
+            // After this loop finishes, the largest element in [0..n-1-i] has moved to position n-1-i.
             for (int j = 0; j < n - 1 - i; j++) {
 
                 Location left  = locations.get(j);
@@ -41,9 +39,6 @@ public class BubbleSort implements Sorter {
                 //   negative -> left should come before right (correct order, no swap)
                 //   zero     -> equal under the ranking rule  (no swap needed)
                 //   positive -> left should come AFTER right  (wrong order, swap!)
-                //
-                // We use the shared compare() so the ranking rule is defined
-                // in exactly one place and every sorting algorithm behaves identically.
                 if (Location.compare(left, right) > 0) {
                     // Swap: put right before left
                     locations.set(j,     right);

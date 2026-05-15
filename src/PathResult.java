@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Stores the result of one shortest-path query (Dijkstra or Bellman-Ford).
+ * Stores the result of one shortest-path query.
  *
  * Fields:
  *   startId       - ID of the source node

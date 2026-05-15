@@ -33,15 +33,7 @@ public class QuickSort implements Sorter {
         quickSort(locations, 0, locations.size() - 1);
     }
 
-    /**
-     * Recursively sorts the sub-list from index low to index high (inclusive).
-     *
-     * Why recursion?
-     *   After partitioning, the pivot is in its final position.
-     *   The left and right sub-lists are independent problems of the same kind,
-     *   so we call the same method on each of them.
-     *   Each recursive call works on a strictly smaller sub-list, so it always terminates.
-     */
+    //Recursively sorts the sub-list from index low to index high (inclusive).
     private void quickSort(ArrayList<Location> list, int low, int high) {
         // Base case: if low >= high, the sub-list has 0 or 1 element and is already sorted.
         if (low >= high) {
@@ -58,28 +50,7 @@ public class QuickSort implements Sorter {
         quickSort(list, pivotIndex + 1, high);
     }
 
-    /**
-     * Partitions the sub-list list[low..high] around the pivot (last element).
-     *
-     * Goal: move all elements that should come BEFORE the pivot to its left,
-     *       and all elements that should come AFTER the pivot to its right.
-     *       Then place the pivot between them.
-     *
-     * How it works step by step:
-     *   - The pivot is list[high] (the last element of the sub-list).
-     *   - i starts just before the sub-list (low - 1).
-     *     i marks the boundary: everything at index <= i belongs before the pivot.
-     *   - j scans from low to high - 1 (every element except the pivot itself).
-     *   - If list[j] should come BEFORE the pivot (compare returns negative or zero),
-     *     we expand the "before" region by incrementing i, then swap list[i] and list[j].
-     *   - After the scan, swap the pivot (list[high]) with list[i + 1].
-     *     Now the pivot is in its correct final position.
-     *   - Return i + 1 as the pivot's final index.
-     *
-     * When is a swap performed?
-     *   When Location.compare(list[j], pivot) <= 0, meaning list[j] belongs
-     *   on the left side (before or equal to the pivot in ranking order).
-     */
+    //Partitions the sub-list list[low..high] around the pivot (last element).
     private int partition(ArrayList<Location> list, int low, int high) {
         // Choose the last element as the pivot.
         Location pivot = list.get(high);

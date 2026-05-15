@@ -14,9 +14,6 @@ import java.util.ArrayList;
  * Task B – shortest paths: builds a weighted undirected graph from paths.csv and
  *   finds shortest paths between the key nodes identified in Task A using Dijkstra.
  *   Results are printed to the console and saved to output/path_results.txt.
- *
- * Algorithm comparison: Dijkstra and Bellman-Ford are timed on Cases 2–4 to
- *   confirm identical distances and demonstrate Dijkstra's speed advantage.
  */
 public class Main {
 
@@ -77,43 +74,9 @@ public class Main {
         }
         System.out.println("Path results saved to output/path_results.txt");
 
-        // ── Algorithm comparison: Dijkstra vs Bellman-Ford (Cases 2–4) ───────
-        System.out.println();
-        System.out.println("==============================");
-        System.out.println("Dijkstra vs Bellman-Ford");
-        System.out.println("==============================\n");
-
-        final int RUNS = 3;
-        long dT2 = 0, bT2 = 0, dT3 = 0, bT3 = 0, dT4 = 0, bT4 = 0;
-        PathResult bfCase2 = null, bfCase3 = null, bfCase4 = null;
-
-        for (int r = 0; r < RUNS; r++) {
-            long s;
-            s = System.nanoTime(); Dijkstra.findPathWithWaypoints(graph, new String[]{a1, a10});       dT2 += System.nanoTime() - s;
-            s = System.nanoTime(); bfCase2 = BellmanFord.findPathWithWaypoints(graph, new String[]{a1, a10});       bT2 += System.nanoTime() - s;
-            s = System.nanoTime(); Dijkstra.findPathWithWaypoints(graph, new String[]{a1, b5, b1});    dT3 += System.nanoTime() - s;
-            s = System.nanoTime(); bfCase3 = BellmanFord.findPathWithWaypoints(graph, new String[]{a1, b5, b1});    bT3 += System.nanoTime() - s;
-            s = System.nanoTime(); Dijkstra.findPathWithWaypoints(graph, new String[]{a1, b5, c5, c1}); dT4 += System.nanoTime() - s;
-            s = System.nanoTime(); bfCase4 = BellmanFord.findPathWithWaypoints(graph, new String[]{a1, b5, c5, c1}); bT4 += System.nanoTime() - s;
-        }
-
-        System.out.printf("%-8s %-22s %-22s %-20s%n", "Case", "Dijkstra avg (ns)", "Bellman-Ford avg (ns)", "Same distance?");
-        printCompRow("Case 2", dT2, bT2, RUNS, case2, bfCase2);
-        printCompRow("Case 3", dT3, bT3, RUNS, case3, bfCase3);
-        printCompRow("Case 4", dT4, bT4, RUNS, case4, bfCase4);
-        System.out.println("\nBoth algorithms produce identical distances; Dijkstra is faster");
-        System.out.println("because its min-heap avoids redundant relaxations.");
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
-
-    private static void printCompRow(String label, long dTotal, long bTotal, int runs,
-                                      PathResult dResult, PathResult bResult) {
-        boolean match = dResult.getTotalDistance() == bResult.getTotalDistance();
-        System.out.printf("%-8s %-22d %-22d %-20s%n", label,
-                dTotal / runs, bTotal / runs,
-                match ? "Yes (" + dResult.getTotalDistance() + ")" : "MISMATCH");
-    }
 
     private static String formatPathCase(int caseNum, String start, String dest,
                                           String[] waypoints, PathResult result) {

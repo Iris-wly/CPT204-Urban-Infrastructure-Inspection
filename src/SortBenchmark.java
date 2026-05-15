@@ -58,10 +58,7 @@ public class SortBenchmark {
         printTop10(lastSortedCopy);
         return getTop10(lastSortedCopy);
     }
-
-    /**
-     * Shallow copy: Location objects are not duplicated because sort only reorders references.
-     */
+    
     private static ArrayList<Location> copyLocations(ArrayList<Location> original) {
         ArrayList<Location> copy = new ArrayList<>();
         for (Location loc : original) copy.add(loc);
