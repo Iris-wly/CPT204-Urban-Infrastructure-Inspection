@@ -5,11 +5,11 @@ import java.util.HashMap;
 /**
  * Shortest-path finder using the Bellman-Ford algorithm.
  *
- * Relaxes every edge (V − 1) times with early termination when no update occurs.
+ * Relaxes every edge (V - 1) times with early termination when no update occurs.
  * Unlike Dijkstra, this algorithm correctly handles negative-weight edges,
  * but is slower on this non-negative-weight graph.
  *
- * Time:  O(V × E)    Space: O(V)
+ * Time:  O(V * E)    Space: O(V)
  */
 public class BellmanFord {
 

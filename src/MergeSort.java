@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * sub-list has one element, then merges adjacent sorted sub-lists upward.
  *
  * Time:  O(n log n) in all cases
- * Space: O(n) — a temporary ArrayList is required during each merge step
+ * Space: O(n), because a temporary ArrayList is required during each merge step
  */
 public class MergeSort implements Sorter {
 
