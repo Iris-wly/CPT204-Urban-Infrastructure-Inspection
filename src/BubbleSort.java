@@ -7,13 +7,14 @@ import java.util.ArrayList;
  *   The algorithm makes repeated passes through the list.
  *   On each pass it compares every pair of adjacent elements.
  *   If the left element should come AFTER the right element, they are swapped.
- *   After each full pass, the largest unsorted element has "bubbled up"
- *   to its correct position at the end of the unsorted region.
+ *   After each pass, the lowest-ranked element in the unsorted region moves
+ *   to its final position at the end of the list.
  *   The unsorted region shrinks by one after every pass.
  *
  * Time complexity:
  *   Worst case  : O(n^2) - every pair must be compared and swapped (reverse-sorted input).
- *   Best case   : O(n)   - one pass with no swaps confirms the list is already sorted.
+ *   Best case   : O(n^2) - this implementation uses the standard nested-loop
+ *                            Bubble Sort without early termination.
  *   Average case: O(n^2)
  *
  * Space complexity: O(1) - sorting is done in-place; no extra list is needed.
@@ -24,12 +25,14 @@ public class BubbleSort implements Sorter {
     public void sort(ArrayList<Location> locations) {
         int n = locations.size();
 
-        // Outer loop: each pass i guarantees that the i largest elements are already in their final positions at the end of the list.
+        // Outer loop: each pass i guarantees that the i lowest-ranked elements are already in their final positions at the end of the list.
         // So the unsorted region is locations[0 .. n-1-i].
         for (int i = 0; i < n - 1; i++) {
 
             // Inner loop: walk through every adjacent pair in the unsorted region.
-            // After this loop finishes, the largest element in [0..n-1-i] has moved to position n-1-i.
+            // After this loop finishes, the lowest-ranked element in [0..n-1-i] has moved to position n-1-i.
+            // There is no swapped/needNextPass flag, so already sorted input still uses O(n^2) comparisons,
+            // although fewer swaps may reduce the constant runtime.
             for (int j = 0; j < n - 1 - i; j++) {
 
                 Location left  = locations.get(j);

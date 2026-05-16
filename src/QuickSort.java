@@ -12,9 +12,8 @@ import java.util.ArrayList;
  *   4. Recursively apply the same process to the left sub-list and the right sub-list.
  *   Recursion stops when a sub-list has 0 or 1 element (already sorted by definition).
  *
- * Pivot strategy used here: always pick the LAST element of the current sub-list.
- *   This is the simplest strategy to implement and explain.
- *   It performs poorly on already-sorted input (worst case), but is easy to understand.
+ * Pivot strategy used here: this implementation uses the last element as the pivot.
+ *   It is simple, but on already sorted or reverse-sorted input it may degrade to O(n^2).
  *
  * Time complexity:
  *   Average case: O(n log n) - each partition splits the list roughly in half.

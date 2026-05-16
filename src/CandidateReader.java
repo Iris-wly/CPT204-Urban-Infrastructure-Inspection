@@ -3,15 +3,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Reads a candidate CSV file and constructs a list of {@link Location} objects.
- *
- * Expected format (header row is skipped):
- * <pre>
- *   location_id,priority_score
- *   L0001,98.5
- * </pre>
- */
+
+//Reads the candidate CSV file and constructs a list of {@link Location} objects.
+//The file format is: location_id,priority_score
+
 public class CandidateReader {
 
     /**

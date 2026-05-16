@@ -19,10 +19,25 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        new File("output").mkdirs();
+
         // Task A: sorting benchmark.
-        ArrayList<Location> top10A = SortBenchmark.runForDataset("Dataset A", "data/candidates_A.csv");
-        ArrayList<Location> top10B = SortBenchmark.runForDataset("Dataset B", "data/candidates_B.csv");
-        ArrayList<Location> top10C = SortBenchmark.runForDataset("Dataset C", "data/candidates_C.csv");
+        // Report note: The final report table, console screenshot, and output/sorting_results.txt
+        // should use the same final run results.
+        ArrayList<Location> top10A;
+        ArrayList<Location> top10B;
+        ArrayList<Location> top10C;
+        try (PrintWriter sortingWriter = new PrintWriter(new FileWriter("output/sorting_results.txt"))) {
+            sortingWriter.println("Task A Sorting Benchmark Results");
+            sortingWriter.println();
+            sortingWriter.println("Report note: The final report table, console screenshot, and output/sorting_results.txt should use the same final run results.");
+            sortingWriter.println();
+
+            top10A = SortBenchmark.runForDataset("Dataset A", "data/candidates_A.csv", sortingWriter);
+            top10B = SortBenchmark.runForDataset("Dataset B", "data/candidates_B.csv", sortingWriter);
+            top10C = SortBenchmark.runForDataset("Dataset C", "data/candidates_C.csv", sortingWriter);
+        }
+        System.out.println("Sorting results saved to output/sorting_results.txt");
 
         // Key nodes passed to Task B (A1/A10 from dataset A, B1/B5 from B, C1/C5 from C).
         String a1  = top10A.get(0).getLocationId();
@@ -64,7 +79,6 @@ public class Main {
         printPathCase(3, a1, b1,  new String[]{b5},     case3);
         printPathCase(4, a1, c1,  new String[]{b5, c5}, case4);
 
-        new File("output").mkdirs();
         try (PrintWriter pw = new PrintWriter(new FileWriter("output/path_results.txt"))) {
             pw.println("Shortest Path Results\n");
             writePathCase(pw, 1, a1, a1,  new String[]{},       case1);
