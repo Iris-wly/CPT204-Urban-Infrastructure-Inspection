@@ -12,8 +12,8 @@ import java.util.ArrayList;
  */
 public class SortBenchmark {
 
-    private static final int WARMUP_RUNS = 5;
-    private static final int MEASUREMENT_RUNS = 10;
+    private static final int WARMUP_RUNS = 50;
+    private static final int MEASUREMENT_RUNS = 1000;
 
     /**
      * Runs the sorting benchmark for one dataset file.
