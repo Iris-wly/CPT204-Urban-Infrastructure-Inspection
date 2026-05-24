@@ -2,27 +2,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-/**
- * Runs all three sorting algorithms on one dataset, measures average runtime
- * and standard deviation, and extracts the Top 10 highest-priority locations.
- *
- * Each algorithm is warmed up first and then timed multiple times on fresh
- * copies of the original list so that every measured run starts from the same
- * unsorted state. {@code System.nanoTime()} is used for timing.
- */
+// Runs the three sorting algorithms on a candidate dataset.
+// It also prints timing results and keeps the Top 10 locations after sorting.
 public class SortBenchmark {
 
     private static final int WARMUP_RUNS = 50;
     private static final int MEASUREMENT_RUNS = 1000;
 
-    /**
-     * Runs the sorting benchmark for one dataset file.
-     * Prints per-algorithm average runtimes and the Top 10 locations.
-     *
-     * @param datasetName label printed in the output header
-     * @param filePath    path to the candidates CSV file
-     * @return Top 10 locations sorted by descending priority
-     */
+    // Runs the benchmark for one CSV file and returns the Top 10 locations.
     public static ArrayList<Location> runForDataset(String datasetName,
                                                      String filePath) throws IOException {
         return runForDataset(datasetName, filePath, null);
@@ -47,6 +34,7 @@ public class SortBenchmark {
         boolean top10Consistent = true;
 
         for (Sorter sorter : sorters) {
+            // Warm up first so the measured runs are a bit more stable.
             for (int run = 0; run < WARMUP_RUNS; run++) {
                 ArrayList<Location> warmupCopy = copyLocations(original);
                 sorter.sort(warmupCopy);
@@ -57,6 +45,7 @@ public class SortBenchmark {
             ArrayList<Location> sortedCopy = null;
 
             for (int run = 0; run < MEASUREMENT_RUNS; run++) {
+                // Use a fresh copy each time so one sorted run does not affect the next.
                 sortedCopy = copyLocations(original);
                 long start = System.nanoTime();
                 sorter.sort(sortedCopy);
@@ -98,6 +87,7 @@ public class SortBenchmark {
         return Math.sqrt(squaredDiffSum / times.length);
     }
     
+    // Make a shallow copy of the list. Location objects are not changed by sorting.
     private static ArrayList<Location> copyLocations(ArrayList<Location> original) {
         ArrayList<Location> copy = new ArrayList<>();
         for (Location loc : original) copy.add(loc);

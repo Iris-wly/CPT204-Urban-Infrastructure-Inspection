@@ -3,17 +3,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-/**
- * Shortest-path finder using Dijkstra's algorithm.
- *
- * Uses a min-heap (PriorityQueue) to always expand the nearest node first.
- * Stale queue entries are skipped (lazy deletion) rather than using decrease-key.
- *
- * Time:  O((V + E) log V)    Space: O(V)
- */
+// Finds shortest paths in the weighted graph using Dijkstra's algorithm.
+// The priority queue helps pick the currently closest node quickly.
 public class Dijkstra {
 
-    /** Node-distance pair used inside the priority queue. */
+    // Small pair used by the priority queue.
     private static class Entry implements Comparable<Entry> {
         String nodeId;
         int distance;
@@ -29,10 +23,8 @@ public class Dijkstra {
         }
     }
 
-    /**
-     * Returns the shortest path from startId to endId.
-     * Returns totalDistance = -1 if no path exists.
-     */
+    // Returns the shortest path from startId to endId.
+    // If no path exists, the returned distance is -1.
     public static PathResult findShortestPath(Graph graph, String startId, String endId) {
         if (startId.equals(endId)) {
             ArrayList<String> path = new ArrayList<>();
@@ -44,22 +36,25 @@ public class Dijkstra {
         HashMap<String, String> prev = new HashMap<>();
         PriorityQueue<Entry> pq = new PriorityQueue<>();
 
+        // dist stores the best distance found so far for each node.
+        // prev stores where each node came from, so the path can be rebuilt later.
         dist.put(startId, 0);
         pq.offer(new Entry(startId, 0));
 
         while (!pq.isEmpty()) {
             Entry current = pq.poll();
 
-            // Skip stale entries superseded by a shorter path found later.
+            // If a shorter route to this node was already found, ignore this old queue entry.
             if (current.distance > dist.getOrDefault(current.nodeId, Integer.MAX_VALUE)) {
                 continue;
             }
 
-            if (current.nodeId.equals(endId)) break; // early termination
+            if (current.nodeId.equals(endId)) break; // Stop once the destination is the closest node.
 
             for (Edge edge : graph.getNeighbors(current.nodeId)) {
                 int newDist = current.distance + edge.getWeight();
                 if (newDist < dist.getOrDefault(edge.getTo(), Integer.MAX_VALUE)) {
+                    // Found a better path to this neighbor.
                     dist.put(edge.getTo(), newDist);
                     prev.put(edge.getTo(), current.nodeId);
                     pq.offer(new Entry(edge.getTo(), newDist));
@@ -71,7 +66,7 @@ public class Dijkstra {
             return new PathResult(startId, endId, -1, new ArrayList<>());
         }
 
-        // Reconstruct path by walking prev map backwards, then reverse.
+        // Rebuild the path from end to start, then reverse it.
         ArrayList<String> path = new ArrayList<>();
         String node = endId;
         while (node != null) {
@@ -83,13 +78,8 @@ public class Dijkstra {
         return new PathResult(startId, endId, dist.get(endId), path);
     }
 
-    /**
-     * Finds the shortest route visiting nodeIds[0..n-1] in order.
-     *
-     * Runs findShortestPath on each consecutive pair and stitches the segments
-     * together, skipping the duplicate waypoint node at each join.
-     * Returns totalDistance = -1 if any segment has no path.
-     */
+    // Finds the shortest route visiting nodeIds[0..n-1] in order.
+    // It searches each pair of nodes in order and joins the path pieces.
     public static PathResult findPathWithWaypoints(Graph graph, String[] nodeIds) {
         ArrayList<String> fullPath = new ArrayList<>();
         int totalDistance = 0;
@@ -104,7 +94,7 @@ public class Dijkstra {
             if (i == 0) {
                 fullPath.addAll(segment.getPath());
             } else {
-                // Skip index 0 of each subsequent segment to avoid duplicating the waypoint.
+                // Skip the first node so the waypoint is not printed twice.
                 ArrayList<String> segPath = segment.getPath();
                 for (int j = 1; j < segPath.size(); j++) {
                     fullPath.add(segPath.get(j));

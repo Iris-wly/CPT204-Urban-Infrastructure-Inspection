@@ -2,31 +2,20 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-/**
- * Reads a paths CSV file and builds a {@link Graph}.
- *
- * Expected format (header row is skipped):
- * <pre>
- *   from_location,to_location,weight
- *   L0001,L0002,2
- * </pre>
- * Each row adds one undirected edge to the graph.
- */
+// Reads the paths CSV file and builds the graph used by Dijkstra.
+// The first row is a header, so it is skipped before reading the edges.
 public class GraphReader {
 
-    /**
-     * @param filePath path to the paths CSV file
-     * @return fully constructed Graph
-     * @throws IOException if the file cannot be read
-     */
+    // Reads each row as from node, to node, and edge weight.
     public static Graph readGraph(String filePath) throws IOException {
         Graph graph = new Graph();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            br.readLine(); // skip header
+            br.readLine(); // Skip the column names.
 
             String line;
             while ((line = br.readLine()) != null) {
+                // CSV fields are simple here: from,to,weight.
                 String[] parts = line.split(",");
                 String from   = parts[0].trim();
                 String to     = parts[1].trim();

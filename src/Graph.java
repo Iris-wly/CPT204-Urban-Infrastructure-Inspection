@@ -1,19 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Represents an undirected weighted graph using an adjacency list.
- *
- * Internal structure:
- *   adjacencyList maps each node ID (String) to a list of outgoing Edge objects.
- *   Because the graph is undirected, addEdge() always inserts two Edge entries:
- *   one for from -> to and one for to -> from.
- *
- * This representation is chosen because:
- *   - Most location nodes are sparsely connected (far fewer edges than n^2).
- *   - Neighbour lookup during Dijkstra is O(degree), which is efficient.
- *   - HashMap gives O(1) average-case node lookup.
- */
+// Undirected weighted graph stored as an adjacency list.
+// Each node ID maps to the edges leaving that node.
 public class Graph {
 
     private HashMap<String, ArrayList<Edge>> adjacencyList;
@@ -22,8 +11,7 @@ public class Graph {
         adjacencyList = new HashMap<>();
     }
 
-    //Adds an undirected edge between fromId and toId with the given weight.
-    //Both nodes are created in the adjacency list if they do not already exist.
+    // Add the edge in both directions because the graph is undirected.
     public void addEdge(String fromId, String toId, int weight) {
         if (!adjacencyList.containsKey(fromId)) {
             adjacencyList.put(fromId, new ArrayList<>());
@@ -35,8 +23,7 @@ public class Graph {
         adjacencyList.get(toId).add(new Edge(fromId, weight));
     }
     
-    //Returns all edges leaving nodeId.
-    //Returns an empty list if the node does not exist.
+    // Return an empty list for unknown nodes so callers do not get null.
     public ArrayList<Edge> getNeighbors(String nodeId) {
         ArrayList<Edge> neighbors = adjacencyList.get(nodeId);
         if (neighbors == null) {
@@ -45,23 +32,19 @@ public class Graph {
         return neighbors;
     }
 
-    //Returns true if the graph contains a node with the given ID.
     public boolean containsNode(String nodeId) {
         return adjacencyList.containsKey(nodeId);
     }
 
-    //Returns the total number of nodes in the graph.
     public int getNodeCount() {
         return adjacencyList.size();
     }
 
-    //Returns a list of all node IDs in the graph.
     public ArrayList<String> getAllNodes() {
         return new ArrayList<>(adjacencyList.keySet());
     }
 
-    //Returns the total number of undirected edges in the graph.
-    //Each undirected edge is stored as two directed entries, so the raw adjacency-list size is divided by 2.
+    // Each undirected edge is stored twice, so divide the stored edge count by 2.
     public int getEdgeCount() {
         int directedCount = 0;
         for (ArrayList<Edge> edges : adjacencyList.values()) {

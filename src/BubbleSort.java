@@ -1,52 +1,35 @@
 import java.util.ArrayList;
 
-/**
- * Bubble Sort implementation of the Sorter interface.
- *
- * How Bubble Sort works:
- *   The algorithm makes repeated passes through the list.
- *   On each pass it compares every pair of adjacent elements.
- *   If the left element should come AFTER the right element, they are swapped.
- *   After each pass, the lowest-ranked element in the unsorted region moves
- *   to its final position at the end of the list.
- *   The unsorted region shrinks by one after every pass.
- *
- * Time complexity:
- *   Worst case  : O(n^2) - every pair must be compared and swapped (reverse-sorted input).
- *   Best case   : O(n^2) - this implementation uses the standard nested-loop
- *                            Bubble Sort without early termination.
- *   Average case: O(n^2)
- *
- * Space complexity: O(1) - sorting is done in-place; no extra list is needed.
- */
+// Sorts locations with Bubble Sort.
+// It repeatedly compares neighboring locations and stops early if a pass makes no swaps.
+
 public class BubbleSort implements Sorter {
 
     @Override
     public void sort(ArrayList<Location> locations) {
         int n = locations.size();
 
-        // Outer loop: each pass i guarantees that the i lowest-ranked elements are already in their final positions at the end of the list.
-        // So the unsorted region is locations[0 .. n-1-i].
+        // After each pass, one low-ranked item settles at the end.
         for (int i = 0; i < n - 1; i++) {
+            boolean swapped = false;
 
-            // Inner loop: walk through every adjacent pair in the unsorted region.
-            // After this loop finishes, the lowest-ranked element in [0..n-1-i] has moved to position n-1-i.
-            // There is no swapped/needNextPass flag, so already sorted input still uses O(n^2) comparisons,
-            // although fewer swaps may reduce the constant runtime.
+            // Only compare the part that is not fixed yet.
             for (int j = 0; j < n - 1 - i; j++) {
 
                 Location left  = locations.get(j);
                 Location right = locations.get(j + 1);
 
-                // Location.compare(left, right) returns:
-                //   negative -> left should come before right (correct order, no swap)
-                //   zero     -> equal under the ranking rule  (no swap needed)
-                //   positive -> left should come AFTER right  (wrong order, swap!)
+                // Positive means left should come after right, so swap them.
                 if (Location.compare(left, right) > 0) {
-                    // Swap: put right before left
                     locations.set(j,     right);
                     locations.set(j + 1, left);
+                    swapped = true;
                 }
+            }
+
+            // If no swaps happened, the list is already sorted.
+            if (!swapped) {
+                break;
             }
         }
     }

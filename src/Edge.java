@@ -1,12 +1,5 @@
-/**
- * Represents one directed edge in the graph.
- * The graph is undirected, so each undirected edge is stored as two Edge objects:
- * one from A to B and one from B to A.
- *
- * Fields:
- *   to     - the ID of the destination node
- *   weight - the travel distance/cost of this edge
- */
+// One edge from the current node to another node.
+// In the graph, an undirected road is stored using two of these edges.
 public class Edge {
 
     private String to;

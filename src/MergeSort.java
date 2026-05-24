@@ -1,14 +1,7 @@
 import java.util.ArrayList;
 
-/**
- * Merge Sort implementation of {@link Sorter}.
- *
- * Divide-and-conquer: recursively splits the list at its midpoint until each
- * sub-list has one element, then merges adjacent sorted sub-lists upward.
- *
- * Time:  O(n log n) in all cases
- * Space: O(n), because a temporary ArrayList is required during each merge step
- */
+// Sorts locations with Merge Sort.
+// It keeps splitting the list into smaller parts, then merges them back in order.
 public class MergeSort implements Sorter {
 
     @Override
@@ -24,11 +17,9 @@ public class MergeSort implements Sorter {
         merge(list, left, mid, right);
     }
 
-    /**
-     * Merges list[left..mid] and list[mid+1..right] into one sorted range.
-     * A temporary copy is required to avoid overwriting elements still needed for comparison.
-     */
+    // Merges two already sorted parts into one sorted range.
     private void merge(ArrayList<Location> list, int left, int mid, int right) {
+        // Copy this range first so values are not overwritten while merging.
         ArrayList<Location> temp = new ArrayList<>();
         for (int k = left; k <= right; k++) temp.add(list.get(k));
 

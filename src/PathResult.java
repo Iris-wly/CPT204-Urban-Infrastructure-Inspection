@@ -1,15 +1,7 @@
 import java.util.ArrayList;
 
-/**
- * Stores the result of one shortest-path query.
- *
- * Fields:
- *   startId       - ID of the source node
- *   endId         - ID of the destination node
- *   totalDistance - sum of edge weights along the shortest path;
- *                   -1 means no path was found
- *   path          - ordered list of node IDs from start to end
- */
+// Stores the result of one path search.
+// totalDistance is -1 when no path can be found.
 public class PathResult {
 
     private String startId;

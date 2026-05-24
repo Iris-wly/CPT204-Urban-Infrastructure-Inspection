@@ -4,26 +4,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-/**
- * Entry point for the Urban Infrastructure Inspection coursework.
- *
- * Task A sorting benchmark: reads three candidate datasets, runs Bubble Sort,
- *   Quick Sort, and Merge Sort on each, reports average runtimes, and extracts
- *   the Top 10 highest-priority locations from each dataset.
- *
- * Task B shortest paths: builds a weighted undirected graph from paths.csv and
- *   finds shortest paths between the key nodes identified in Task A using Dijkstra.
- *   Results are printed to the console and saved to output/path_results.txt.
- */
+// Main program for the coursework.
+// It runs the sorting benchmark first, then uses the selected locations for
+// the shortest path part.
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
         new File("output").mkdirs();
 
-        // Task A: sorting benchmark.
-        // Report note: The final report table, console screenshot, and output/sorting_results.txt
-        // should use the same final run results.
+        // Task A: run sorting on the three candidate datasets and save the results.
         ArrayList<Location> top10A;
         ArrayList<Location> top10B;
         ArrayList<Location> top10C;
@@ -39,7 +29,7 @@ public class Main {
         }
         System.out.println("Sorting results saved to output/sorting_results.txt");
 
-        // Key nodes passed to Task B (A1/A10 from dataset A, B1/B5 from B, C1/C5 from C).
+        // Pick the required ranked locations for the path search cases.
         String a1  = top10A.get(0).getLocationId();
         String a10 = top10A.get(9).getLocationId();
         String b1  = top10B.get(0).getLocationId();
@@ -54,11 +44,7 @@ public class Main {
         System.out.printf("B1=%-8s B5=%-8s%n",  b1, b5);
         System.out.printf("C1=%-8s C5=%-8s%n",  c1, c5);
 
-        // Task B: build graph and run four shortest-path cases.
-        //   Case 1: A1 -> A1               (trivial, distance = 0)
-        //   Case 2: A1 -> A10              (direct)
-        //   Case 3: A1 -> B5 -> B1         (one required waypoint)
-        //   Case 4: A1 -> B5 -> C5 -> C1   (two required waypoints)
+        // Task B: load the road/path graph and run the required shortest-path cases.
         System.out.println();
         System.out.println("==============================");
         System.out.println("Shortest Path Results");
@@ -90,7 +76,7 @@ public class Main {
 
     }
 
-    // Helpers.
+    // Format one case so console output and file output stay the same.
 
     private static String formatPathCase(int caseNum, String start, String dest,
                                           String[] waypoints, PathResult result) {
